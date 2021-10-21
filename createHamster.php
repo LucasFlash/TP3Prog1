@@ -2,12 +2,12 @@
 require_once 'clases/ControladorSesion.php';
 if (isset($_POST['nombre_hamster'])) { //SI DA FALSO, VUELVE A MOSTRAR EL FORMULARIO//
     $cs = new ControladorSesion();
-    $result = $cs->createHamster($_POST['nombre_hamster'], $_POST['sexo_hamster'], $_POST['fechaNac_hamster']);
+    $result = $cs->createHamster($_POST['id_usuario'], $_POST['nombre_hamster'], $_POST['sexo_hamster'], $_POST['fechaNac_hamster']);
     if( $result[0] === true ) {
         $redirigir = 'home.php?mensaje='.$result[1];
     }
     else {
-        $redirigir = 'createhamster.php?mensaje='.$result[1];
+        $redirigir = 'createHamster.php?mensaje='.$result[1];
     }
     header('Location: ' . $redirigir);
 }
@@ -22,18 +22,33 @@ if (isset($_POST['nombre_hamster'])) { //SI DA FALSO, VUELVE A MOSTRAR EL FORMUL
     </head>
     <body class="container">
       <div class="jumbotron text-center">
-      <h1>Sistema bancario</h1>
+      <h1>Criadero Refugio de Hamsters</h1>
       </div>    
       <div class="text-center">
-        <h3>Crear nuevo usuario</h3>
+        <h3>Añadir Nuevo Hamster</h3>
         <?php
             if (isset($_GET['mensaje'])) {
                 echo '<div id="mensaje" class="alert alert-primary text-center">
                     <p>'.$_GET['mensaje'].'</p></div>';
             }
+      
         ?>
 
         <form action="createHamster.php" method="post">
+         
+     <select type="hidden" name="id_usuario">    
+     <?php
+
+                     session_start();
+      
+        $usuario = unserialize($_SESSION['usuario']);
+        $id_usuario = $usuario->getId();
+
+        echo '<option value= '.$id_usuario.'>';
+
+        ?>
+             </select> <br> 
+
         <input name="nombre_hamster"></input><br>
             <select name="sexo_hamster">
             <option value="0">Hembra</option>
@@ -41,7 +56,7 @@ if (isset($_POST['nombre_hamster'])) { //SI DA FALSO, VUELVE A MOSTRAR EL FORMUL
             </select><br>
             <input type="date" name="fechaNac_hamster"><br>
 
-         <input type="submit" value="Registrarse" class="btn btn-primary">
+         <input type="submit" value="Añadir" class="btn btn-primary">
         </form>        
       </div> 
     </body>

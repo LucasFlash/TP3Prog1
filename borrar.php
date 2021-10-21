@@ -12,6 +12,10 @@ require_once 'clases/Hamster.php';
         $id_usuario = $usuario->getId();
         
         echo $id_usuario;
+         
+
+
+echo "la fecha actual es " . date("d") . " del " . date("m") . " de " . date("Y");
 
         ?>
     </hmtl>
